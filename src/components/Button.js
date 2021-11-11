@@ -1,15 +1,19 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 
 const Button = (props) => {
+	useEffect(() => {
+		console.log(props.formValid);
+	}, [props.formValid]);
+
 	return (
 		<Fragment>
 			<button
 				className={props.classes}
 				id={props.id}
 				value={props.value}
-				onClick={props.onChangedTip}
+				onClick={props.changedTipValue}
 				name={props.name}
-				onSubmit={props.onCalcul}
+				type={props.type}
 			>
 				{props.text}
 			</button>

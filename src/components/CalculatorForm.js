@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Fragment } from "react";
 
 import "../assets/style/scss/main.scss";
@@ -7,46 +7,12 @@ import "../assets/style/scss/main.scss";
 import Input from "./Input";
 import Button from "./Button";
 
-const CalculatorForm = () => {
-	let invalidEl, btnArr;
-
-	const [form, setForm] = useState({
-		bill: 0,
-		person: 0,
-		tip: 0,
-	});
-
-	const [formValid, setFormValid] = useState(false);
+const CalculatorForm = ({ changedValue }) => {
+	let btnArr;
 
 	useEffect(() => {
 		btnArr = document.querySelectorAll(".tip--btn");
-	}, []);
-
-	useEffect(() => {
-		if (form.bill && form.person && form.tip >= 0) {
-			setFormValid(true);
-		} else setFormValid(false);
-	}, [form.bill, form.person, form.tip]);
-
-	const isNumberValid = (e) => {
-		let { id, value } = e.target;
-		let valueTemp = parseFloat(value);
-		invalidEl = document.querySelector(`#invalid-${id}`);
-
-		if (id === "custom" && !valueTemp !== 0 && !valueTemp) {
-			invalidEl ? (invalidEl.style.display = "none") : null;
-			e.target.classList.remove("input-invalid");
-			return true;
-		}
-		if (valueTemp <= 0) {
-			invalidEl ? (invalidEl.style.display = "block") : null;
-			e.target.classList.toggle("input-invalid");
-			return false;
-		}
-		invalidEl ? (invalidEl.style.display = "none") : null;
-		e.target.classList.remove("input-invalid");
-		return true;
-	};
+	});
 
 	const resetBtn = (btnId = "") => {
 		btnArr.forEach((btn) => {
@@ -56,16 +22,12 @@ const CalculatorForm = () => {
 		});
 	};
 
-	const changedValue = (e) => {
-		const { name, value } = e.target;
-		if (isNumberValid(e)) {
-			setForm({ ...form, [name]: value });
-		}
-	};
-
 	const changedTipValue = (e) => {
 		e.preventDefault();
 		let btnId = e.target.id ?? "";
+		if (btnId) {
+			changedValue(e);
+		}
 		resetBtn(btnId);
 	};
 
@@ -88,7 +50,7 @@ const CalculatorForm = () => {
 						name="bill"
 						id="bill"
 						placeholder="0"
-						onChangeValue={changedValue}
+						onChangeValue={(e) => changedValue(e)}
 					/>
 				</div>
 				<div className="calculator__control">
@@ -143,8 +105,8 @@ const CalculatorForm = () => {
 							name="tip"
 							id="custom"
 							placeholder="Custom"
-							onChangeValue={changedValue}
 							onClick={changedTipValue}
+							onChangeValue={(e) => changedValue(e)}
 						/>
 					</div>
 				</div>
@@ -161,7 +123,7 @@ const CalculatorForm = () => {
 						name="person"
 						id="person"
 						placeholder="0"
-						onChangeValue={changedValue}
+						onChangeValue={(e) => changedValue(e)}
 					/>
 				</div>
 			</form>

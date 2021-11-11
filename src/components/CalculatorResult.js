@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Fragment } from "react";
 
 import "../assets/style/scss/main.scss";
@@ -18,7 +18,8 @@ const CalculatorResult = (props) => {
 						classes="btn btn--calculator"
 						text="Calculator"
 						id="calculator"
-						onCalcul={props.onSubmit}
+						type="submit"
+						formValid={props.formVaid}
 					/>
 					<Button classes="btn btn--reset" text="Reset" id="reset" />
 				</div>
