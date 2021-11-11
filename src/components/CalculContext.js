@@ -64,6 +64,7 @@ function CalculProvider({ children }) {
 		setResult({ tip: null, total: null });
 		resetBtn();
 		resetInvalid();
+		resetValue();
 	};
 
 	const resetBtn = (btnId = "") => {
@@ -88,6 +89,14 @@ function CalculProvider({ children }) {
 				e.classList.remove("input-invalid");
 			});
 		}
+	};
+
+	const resetValue = () => {
+		const inputArr = document.querySelectorAll(".calculator__control--input");
+		console.log(inputArr);
+		inputArr.forEach((input) => {
+			input.value = 0;
+		});
 	};
 
 	const changedTipValue = (e) => {

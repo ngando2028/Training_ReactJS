@@ -6,15 +6,16 @@ import { CalCulContext } from "./CalculContext";
 const Input = (props) => {
 	const { isReset, changedValue, changedTipValue } = useContext(CalCulContext);
 	let invalidEl;
-
-	useEffect(() => {
-		if (isReset) {
-			const inputArr = document.querySelectorAll(".calculator__control--input");
-			inputArr.forEach((input) => {
-				input.value = 0;
-			});
-		}
-	}, [isReset]);
+	// useEffect(() => {
+	// 	if (isReset) {
+	// 		console.log("reset");
+	// 		const inputArr = document.querySelectorAll(".calculator__control--input");
+	// 		console.log(inputArr);
+	// 		inputArr.forEach((input) => {
+	// 			input.value = "";
+	// 		});
+	// 	}
+	// }, [isReset]);
 
 	function validate(s) {
 		var rgx = /(?:^[0-9\b]+[.]?[0-9\b]*$)|(?:^[0-9\b]*$)/;
