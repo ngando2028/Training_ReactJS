@@ -1,14 +1,18 @@
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
+import { CalCulContext } from "./CalculContext";
 
 const Button = (props) => {
+	const { handlerSubmit, hanlerReset, changedTipValue } =
+		useContext(CalCulContext);
+
 	const handlerClickEvent = (e) => {
 		switch (props.id) {
 			case "calculator":
-				return props.onSubmit(e);
+				return handlerSubmit(e);
 			case "reset":
-				return props.onReset(e);
+				return hanlerReset(e);
 			default:
-				return props.onChangedTip(e);
+				return changedTipValue(e);
 		}
 	};
 

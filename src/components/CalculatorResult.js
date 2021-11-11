@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Fragment } from "react";
 
 import "../assets/style/scss/main.scss";
 import Button from "./Button";
+import { CalCulContext } from "./CalculContext";
 import ResultGroup from "./ResultGroup";
 
-const CalculatorResult = (props) => {
+const CalculatorResult = () => {
+	const { result, isDisabled, formValid } = useContext(CalCulContext);
+
 	return (
 		<Fragment>
 			<div className="calculator__result">
@@ -13,12 +16,12 @@ const CalculatorResult = (props) => {
 					<ResultGroup
 						text="Tip amount"
 						type="tip"
-						value={props.result.tip ?? "0.00"}
+						value={result.tip ? result.tip : "0.00"}
 					/>
 					<ResultGroup
 						text="Total"
 						type="total"
-						value={props.result.total ?? "0.00"}
+						value={result.total ? result.total : "0.00"}
 					/>
 				</div>
 				<div className="calculator__result-control">
@@ -27,15 +30,13 @@ const CalculatorResult = (props) => {
 						text="Calculator"
 						id="calculator"
 						type="submit"
-						disabled={!props.formValid || props.isDisabled}
-						onSubmit={props.onSubmit}
+						disabled={!formValid || isDisabled}
 					/>
 					<Button
 						classes="btn btn--reset"
 						text="Reset"
 						id="reset"
-						onReset={props.onReset}
-						disabled={props.isDisabled}
+						disabled={isDisabled}
 					/>
 				</div>
 			</div>
