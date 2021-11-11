@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-expressions */
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Fragment } from "react";
 import { CalCulContext } from "./CalculContext";
 
 const Input = (props) => {
-	const { isReset, changedValue, changedTipValue } = useContext(CalCulContext);
+	const { changedValue, changedTipValue } = useContext(CalCulContext);
 	let invalidEl;
 	// useEffect(() => {
 	// 	if (isReset) {
