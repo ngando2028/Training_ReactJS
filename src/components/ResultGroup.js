@@ -8,7 +8,9 @@ const ResultGroup = (props) => {
 					{props.text} <span>/person</span>
 				</label>
 
-				<p className={`calculator__result--${props.type}`}></p>
+				<p className={`calculator__result--${props.type}`}>
+					<span>${props.value}</span>
+				</p>
 			</div>
 		</Fragment>
 	);

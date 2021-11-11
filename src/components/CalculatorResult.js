@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Fragment } from "react";
 
 import "../assets/style/scss/main.scss";
@@ -10,8 +10,16 @@ const CalculatorResult = (props) => {
 		<Fragment>
 			<div className="calculator__result">
 				<div className="calculator__result-container">
-					<ResultGroup text="Tip amount" type="tip" />
-					<ResultGroup text="Total" type="total" />
+					<ResultGroup
+						text="Tip amount"
+						type="tip"
+						value={props.result.tip ?? "0.00"}
+					/>
+					<ResultGroup
+						text="Total"
+						type="total"
+						value={props.result.total ?? "0.00"}
+					/>
 				</div>
 				<div className="calculator__result-control">
 					<Button
@@ -19,9 +27,16 @@ const CalculatorResult = (props) => {
 						text="Calculator"
 						id="calculator"
 						type="submit"
-						formValid={props.formVaid}
+						disabled={!props.formValid || props.isDisabled}
+						onSubmit={props.onSubmit}
 					/>
-					<Button classes="btn btn--reset" text="Reset" id="reset" />
+					<Button
+						classes="btn btn--reset"
+						text="Reset"
+						id="reset"
+						onReset={props.onReset}
+						disabled={props.isDisabled}
+					/>
 				</div>
 			</div>
 		</Fragment>

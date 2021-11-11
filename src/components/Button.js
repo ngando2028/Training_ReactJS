@@ -1,9 +1,16 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 
 const Button = (props) => {
-	useEffect(() => {
-		console.log(props.formValid);
-	}, [props.formValid]);
+	const handlerClickEvent = (e) => {
+		switch (props.id) {
+			case "calculator":
+				return props.onSubmit(e);
+			case "reset":
+				return props.onReset(e);
+			default:
+				return props.onChangedTip(e);
+		}
+	};
 
 	return (
 		<Fragment>
@@ -11,9 +18,10 @@ const Button = (props) => {
 				className={props.classes}
 				id={props.id}
 				value={props.value}
-				onClick={props.changedTipValue}
+				onClick={handlerClickEvent}
 				name={props.name}
 				type={props.type}
+				disabled={props.disabled}
 			>
 				{props.text}
 			</button>
