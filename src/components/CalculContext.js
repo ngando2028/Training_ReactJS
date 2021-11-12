@@ -66,6 +66,16 @@ function CalculProvider({ children }) {
 		setInputPerson("");
 	};
 
+	const checkNumber = (e) => {
+		let { name, value } = e.target;
+		let re = name === "person" ? /^[0-9]*$/ : /^[0-9]*\.?[0-9]*$/;
+		if (!re.test(value)) {
+			e.preventDefault();
+			return false;
+		}
+		return true;
+	};
+
 	const checkInvalid = (name, value) => {
 		if ((value === "" || value === 0) && name === "tip") {
 			value = 0;
@@ -94,22 +104,24 @@ function CalculProvider({ children }) {
 
 	const onChangedValue = (e) => {
 		let { id, value } = e.target;
-		switch (id) {
-			case "bill":
-				setInputBill(value);
-				checkInvalid(id, value);
-				break;
-			case "person":
-				setInputPerson(value);
-				checkInvalid(id, value);
-				break;
-			case "custom":
-				setInputCustom(value);
-				checkInvalid("tip", value);
-				break;
-			default:
-				checkInvalid("tip", value);
-				return;
+		if (checkNumber(e)) {
+			switch (id) {
+				case "bill":
+					setInputBill(value);
+					checkInvalid(id, value);
+					break;
+				case "person":
+					setInputPerson(value);
+					checkInvalid(id, value);
+					break;
+				case "custom":
+					setInputCustom(value);
+					checkInvalid("tip", value);
+					break;
+				default:
+					checkInvalid("tip", value);
+					return;
+			}
 		}
 	};
 

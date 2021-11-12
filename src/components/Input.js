@@ -6,6 +6,13 @@ import { CalCulContext } from "./CalculContext";
 const Input = (props) => {
 	const { onChangedTipValue, inputValid } = useContext(CalCulContext);
 
+	// const name = e.target.name;
+	// const value = e.target.value;
+	// const re = name === "personCount" ?;
+	// // if value is not blank, then test the regex
+	// if (re.test(value) || value === "") {
+	// }
+
 	return (
 		<Fragment>
 			<input
