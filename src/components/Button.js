@@ -2,7 +2,7 @@ import { Fragment, useContext } from "react";
 import { CalCulContext } from "./CalculContext";
 
 const Button = (props) => {
-	const { handlerSubmit, hanlerReset, changedTipValue } =
+	const { handlerSubmit, handlerReset, onChangedTipValue } =
 		useContext(CalCulContext);
 
 	const handlerClickEvent = (e) => {
@@ -10,9 +10,9 @@ const Button = (props) => {
 			case "calculator":
 				return handlerSubmit(e);
 			case "reset":
-				return hanlerReset(e);
+				return handlerReset(e);
 			default:
-				return changedTipValue(e);
+				return onChangedTipValue(e);
 		}
 	};
 

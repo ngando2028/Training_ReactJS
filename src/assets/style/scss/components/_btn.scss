@@ -26,10 +26,6 @@
 	top: 3px;
 }
 
-.btn:active:not([disabled]) {
-	top: 1.5px;
-}
-
 .btn:disabled {
 	cursor: default;
 	background-color: $color-dark-grayish-cyan-1;

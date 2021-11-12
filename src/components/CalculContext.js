@@ -5,10 +5,16 @@ export const CalCulContext = createContext();
 
 function CalculProvider({ children }) {
 	const [formValid, setFormValid] = useState(false);
-	const [isReset, setIsReset] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(false);
-	const [btnArr, setBtnArr] = useState([]);
-
+	const [inputBill, setInputBill] = useState("");
+	const [inputPerson, setInputPerson] = useState("");
+	const [inputCustom, setInputCustom] = useState("");
+	const [inputValid, setInputValid] = useState({
+		bill: true,
+		person: true,
+		tip: true,
+	});
+	const [activeBtn, setActiveBtn] = useState(6);
 	const [formValue, setFormValue] = useState({
 		bill: 0,
 		person: 0,
@@ -29,16 +35,12 @@ function CalculProvider({ children }) {
 		} else setFormValid(false);
 	}, [formValue, formValue.bill, formValue.person, formValue.tip, formValid]);
 
-	useEffect(() => {
-		setBtnArr(document.querySelectorAll(".tip--btn"));
-	}, []);
-
 	const handlerSubmit = async (e) => {
 		e.preventDefault();
 		try {
 			setIsDisabled(true);
 			let result = await fetch(
-				`${API_URL}?bill=${formValue.bill}&people=${formValue.person}&tipPercent=${formValue.tip}`
+				`${API_URL}/calculate?bill=${formValue.bill}&people=${formValue.person}&tipPercent=${formValue.tip}`
 			);
 
 			let resultData = await result.json();
@@ -53,79 +55,78 @@ function CalculProvider({ children }) {
 		}
 	};
 
-	const hanlerReset = () => {
-		setIsReset(true);
-		setFormValue({
-			bill: 0,
-			person: 0,
-			tip: 0,
-		});
+	const handlerReset = () => {
 		setFormValid(false);
 		setResult({ tip: null, total: null });
-		resetBtn();
-		resetInvalid();
-		resetValue();
+		setFormValue({ bill: 0, person: 0, tip: 0, tipCustom: false });
+		setInputValid({ bill: true, person: true, tip: true });
+		setActiveBtn(6);
+		setInputBill("");
+		setInputCustom("");
+		setInputPerson("");
 	};
 
-	const resetBtn = (btnId = "") => {
-		btnArr.forEach((btn) => {
-			btn.id !== btnId
-				? btn.classList.remove("active")
-				: btn.classList.add("active");
-		});
-	};
-
-	const resetInvalid = () => {
-		let elInvalid = document.querySelectorAll(".invalid");
-		let inputInvalid = document.querySelectorAll(".input-invalid");
-		if (elInvalid.length > 0) {
-			elInvalid.forEach((e) => {
-				e.style.display = "none";
-			});
-		}
-
-		if (inputInvalid.length > 0) {
-			inputInvalid.forEach((e) => {
-				e.classList.remove("input-invalid");
-			});
-		}
-	};
-
-	const resetValue = () => {
-		const inputArr = document.querySelectorAll(".calculator__control--input");
-		console.log(inputArr);
-		inputArr.forEach((input) => {
-			input.value = 0;
-		});
-	};
-
-	const changedTipValue = (e) => {
-		let btnId = e.target.id ?? "";
-		resetBtn(btnId);
-		if (btnId) {
-			changedValue(e);
-		}
-	};
-
-	const changedValue = (e) => {
-		let { name, value } = e.target;
-		if (value === "") {
+	const checkInvalid = (name, value) => {
+		if ((value === "" || value === 0) && name === "tip") {
 			value = 0;
-			setFormValue({ ...formValue, [name]: parseFloat(value) });
+			setFormValue({ ...formValue, [name]: value, tipCustom: true });
+			setInputValid({ ...inputValid, [name]: true });
+		} else if (parseFloat(value) < 0 || isNaN(parseFloat(value))) {
+			setInputValid({ ...inputValid, [name]: false });
+		} else {
+			setFormValue({ ...formValue, [name]: value, tipCustom: false });
+			setInputValid({ ...inputValid, [name]: true });
 		}
-		setFormValue({ ...formValue, [name]: parseFloat(value) });
+	};
+
+	const onChangedTipValue = (e) => {
+		const { id } = e.target;
+		if (id === "custom") {
+			setActiveBtn(6);
+			onChangedValue(e);
+		} else if (+id < 5) {
+			setActiveBtn(id);
+			onChangedValue(e);
+		} else {
+			onChangedValue(e);
+		}
+	};
+
+	const onChangedValue = (e) => {
+		let { id, value } = e.target;
+		switch (id) {
+			case "bill":
+				setInputBill(value);
+				checkInvalid(id, value);
+				break;
+			case "person":
+				setInputPerson(value);
+				checkInvalid(id, value);
+				break;
+			case "custom":
+				setInputCustom(value);
+				checkInvalid("tip", value);
+				break;
+			default:
+				checkInvalid("tip", value);
+				return;
+		}
 	};
 
 	const value = {
 		formValid,
-		isReset,
 		formValue,
 		result,
 		isDisabled,
-		changedValue,
-		hanlerReset,
+		activeBtn,
+		inputValid,
+		inputBill,
+		inputCustom,
+		inputPerson,
+		onChangedValue,
+		handlerReset,
 		handlerSubmit,
-		changedTipValue,
+		onChangedTipValue,
 	};
 
 	return (
